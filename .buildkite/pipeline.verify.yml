@@ -1,0 +1,48 @@
+---
+env:
+  PANTS_CONFIG_FILES: "['pants.toml', 'pants.ci.toml']"
+
+steps:
+  - label: ":lint-roller::bash: Lint Shell"
+    command:
+      - make lint-shell
+
+  - label: ":lint-roller::buildkite: Lint Plugin"
+    command:
+      - make lint-plugin
+
+  - label: ":bash: Unit Tests"
+    command:
+      - make test-shell
+
+  - label: ":buildkite: Plugin Tests"
+    command:
+      - make test-plugin
+
+  - wait
+
+  - label: ":buildkite::pulumi: Run Plugin - Preview"
+    plugins:
+      - seek-oss/aws-sm#v2.3.1:
+          env:
+            PULUMI_ACCESS_TOKEN: "pulumi-token"
+      - "ssh://git@github.com/grapl-security/pulumi-buildkite-plugin#${BUILDKITE_COMMIT}":
+          command: preview
+          project_dir: pulumi/pulumi_buildkite_plugin_test
+          stack: grapl/testing
+    agents:
+      queue: "pulumi-staging"
+
+  - wait
+
+  - label: ":buildkite::pulumi: Run Plugin - Update"
+    plugins:
+      - seek-oss/aws-sm#v2.3.1:
+          env:
+            PULUMI_ACCESS_TOKEN: "pulumi-token"
+      - "ssh://git@github.com/grapl-security/pulumi-buildkite-plugin#${BUILDKITE_COMMIT}":
+          command: update
+          project_dir: pulumi/pulumi_buildkite_plugin_test
+          stack: grapl/testing
+    agents:
+      queue: "pulumi-staging"

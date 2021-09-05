@@ -1,0 +1,31 @@
+version: "3.8"
+
+x-common-variables:
+  read-only-workdir: &read-only-workdir
+    type: bind
+    source: .
+    target: /workdir
+    read_only: true
+  read-write-workdir: &read-write-workdir
+    type: bind
+    source: .
+    target: /workdir
+    read_only: false
+  read-only-plugin: &read-only-plugin
+    # Buildkite containers assume you mount into /plugin
+    type: bind
+    source: .
+    target: /plugin
+    read_only: true
+
+services:
+  plugin-tester:
+    image: buildkite/plugin-tester:latest # the only available tag
+    volumes:
+      - *read-only-plugin
+
+  plugin-linter:
+    image: buildkite/plugin-linter:latest # the only available tag
+    command: ["--id", "grapl-security/pulumi"]
+    volumes:
+      - *read-only-plugin

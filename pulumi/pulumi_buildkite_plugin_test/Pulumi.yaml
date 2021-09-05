@@ -1,0 +1,4 @@
+name: pulumi-buildkite-plugin-test
+runtime:
+  name: python
+description: A minimal AWS Python Pulumi program for exercising our Pulumi Buildkite Plugin

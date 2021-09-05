@@ -1,0 +1,22 @@
+---
+name: Pulumi
+description: Run Pulumi (according to Grapl's patterns)
+author: https://github.com/grapl-security
+requirements: ["jq", "pulumi"]
+configuration:
+  properties:
+    command:
+      description: The Pulumi command to execute
+      type: string
+      enum: ["preview", "update"]
+    project_dir:
+      description: Location of the Pulumi project to operate on
+      type: string
+    stack:
+      description: Name of the stack to operate on
+      type: string
+    # venv_management:
+    #   description: The method for managing the Python virtualenv for the Pulumi project
+    #   type: string
+    #   enum: ["pants"]
+  additionalProperties: false

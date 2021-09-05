@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# This is a separate script to make mocking easier in tests of the
+# plugin itself. See comments in hooks/command for more details.
+build-support/manage_virtualenv.sh populate

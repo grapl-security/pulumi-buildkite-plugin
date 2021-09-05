@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# shellcheck source-path=SCRIPTDIR
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/pulumi.sh"
+
+readonly default_command=preview
+readonly command="${BUILDKITE_PLUGIN_PULUMI_COMMAND:-${default_command}}"
+readonly valid_commands=(
+    preview
+    update
+)
+
+readonly project_dir="${BUILDKITE_PLUGIN_PULUMI_PROJECT_DIR}"
+readonly stack="${BUILDKITE_PLUGIN_PULUMI_STACK}"
+
+should_run() {
+    for valid in "${valid_commands[@]}"; do
+        if [ "${command}" == "${valid}" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
+if ! should_run; then
+    echo "--- :pulumi: Unrecognized command: '${command}'!"
+    echo "Please use one of the following: ${valid_commands[*]}"
+    exit 1
+fi
+
+########################################################################
+# For now, we'll assume that anything using this plugin is sticking to
+# our pattern of using Pants to manage the Python virtualenv for our
+# Pulumi project(s), and (additionally) using our
+# `build-support/manage_virtualenv.sh` script to do it.
+#
+# We're invoking the logic using a separate script to make mocking
+# easy in tests of the plugin. The VIRTUAL_ENV manipulations afterward
+# are to eliminate the need to `source` an `activate` file that
+# doesn't exist (during tests).
+echo -e "--- :python: Installing dependencies"
+PATH=${PATH}:"$(dirname "${BASH_SOURCE[0]}")/../bin/"
+pants_venv_setup
+export VIRTUAL_ENV=build-support/venv
+PATH="$(pwd)/${VIRTUAL_ENV}/bin":${PATH}
+export PATH
+########################################################################
+
+echo -e "--- :pulumi: Log in"
+pulumi login
+
+project="$(project_name "${project_dir}" "${stack}")"
+readonly project
+
+case "${command}" in
+    preview)
+        echo -e "--- :pulumi: Previewing changes to ${project} + ${stack} infrastructure"
+        pulumi preview \
+            --cwd="${project_dir}" \
+            --stack="${stack}" \
+            --show-replacement-steps \
+            --non-interactive \
+            --diff \
+            --message="Previewing from ${BUILDKITE_BUILD_URL}"
+        ;;
+    update)
+        echo -e "--- :pulumi: Updating ${project} + ${stack} infrastructure"
+        pulumi update \
+            --cwd="${project_dir}" \
+            --stack="${stack}" \
+            --show-replacement-steps \
+            --non-interactive \
+            --diff \
+            --yes \
+            --message="Updating from ${BUILDKITE_BUILD_URL}"
+        ;;
+    *)
+        echo "--- :pulumi: Error in command script - unhandled command: '${command}'!"
+        echo "Please report this as a bug"
+        exit 1
+        ;;
+esac

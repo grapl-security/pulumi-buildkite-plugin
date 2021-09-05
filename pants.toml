@@ -1,0 +1,66 @@
+[GLOBAL]
+pants_version = "2.6.0"
+backend_packages = [
+    "pants.backend.python",
+    "pants.backend.shell",
+    "pants.backend.shell.lint.shellcheck",
+    "pants.backend.shell.lint.shfmt"
+]
+
+pants_ignore = [
+    "!.buildkite/"
+]
+
+plugins = [
+  "toolchain.pants.plugin==0.13.1"
+]
+
+remote_cache_read = true
+remote_cache_write = true
+remote_store_address = "grpcs://cache.toolchain.com:443"
+remote_auth_plugin = "toolchain.pants.auth.plugin:toolchain_auth_plugin"
+
+[toolchain-setup]
+repo = "pulumi-buildkite-plugin"
+
+[buildsense]
+enable = true
+
+# See https://www.pantsbuild.org/docs/anonymous-telemetry
+[anonymous-telemetry]
+enabled = true
+# Randomly generated with `uuidgen --random`
+repo_id = "6a78af1b-5d9c-4b13-b805-66c57b2c0e20"
+
+[source]
+root_patterns = [
+    "/3rdparty",
+    "/pulumi"
+]
+
+[python-setup]
+requirement_constraints = "3rdparty/python/constraints.txt"
+interpreter_constraints = ["CPython==3.7.*"]
+
+[python-infer]
+inits = true
+
+[shfmt]
+# Indent with 4 spaces
+# Indent switch cases
+# Redirect operators are followed by a space
+args = ["-i 4", "-ci", "-sr"]
+
+[test]
+output = "all"
+
+[shellcheck]
+# Currently, Pants only knows about v0.7.1, but v0.7.2 has some nice
+# relative sourcing features we'd like to take advantage of (namely,
+# `script-path=SOURCEDIR`). Once Pants knows about v0.7.2 natively, we
+# can remove these configuration values.
+version = "v0.7.2"
+known_versions = [
+  "v0.7.2|darwin|969bd7ef668e8167cfbba569fb9f4a0b2fc1c4021f87032b6a0b0e525fb77369|3988092",
+  "v0.7.2|linux|70423609f27b504d6c0c47e340f33652aea975e45f312324f2dbf91c95a3b188|1382204"
+]
