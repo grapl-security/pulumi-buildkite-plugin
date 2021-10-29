@@ -12,7 +12,5 @@ pants_ignore = [
   ".cache/pants/lmdb_store",
 ]
 
-# Temporarily disable the remote cache until we can get
-# repository-specific tokens into the CI/CD system
-# [auth]
-# from_env_var = "TOOLCHAIN_AUTH_TOKEN"
+[auth]
+from_env_var = "TOOLCHAIN_AUTH_TOKEN"
