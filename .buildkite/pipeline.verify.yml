@@ -1,11 +1,17 @@
 ---
 env:
   PANTS_CONFIG_FILES: "['pants.toml', 'pants.ci.toml']"
+  BUILDKITE_PLUGIN_VAULT_ENV_SECRET_PREFIX: "secret/data/buildkite/env"
 
 steps:
   - label: ":lint-roller::bash: Lint Shell"
     command:
       - make lint-shell
+    plugins:
+      - grapl-security/vault-login#v0.1.0
+      - grapl-security/vault-env#v0.1.0:
+          secrets:
+            - pulumi-buildkite-plugin/TOOLCHAIN_AUTH_TOKEN
 
   - label: ":lint-roller::buildkite: Lint Plugin"
     command:
@@ -14,6 +20,11 @@ steps:
   - label: ":bash: Unit Tests"
     command:
       - make test-shell
+    plugins:
+      - grapl-security/vault-login#v0.1.0
+      - grapl-security/vault-env#v0.1.0:
+          secrets:
+            - pulumi-buildkite-plugin/TOOLCHAIN_AUTH_TOKEN
 
   - label: ":buildkite: Plugin Tests"
     command:
@@ -23,9 +34,10 @@ steps:
 
   - label: ":buildkite::pulumi: Run Plugin - Preview"
     plugins:
-      - seek-oss/aws-sm#v2.3.1:
-          env:
-            PULUMI_ACCESS_TOKEN: "pulumi-token"
+      - grapl-security/vault-login#v0.1.0
+      - grapl-security/vault-env#v0.1.0:
+          secrets:
+            - PULUMI_ACCESS_TOKEN
       - "grapl-security/pulumi#${BUILDKITE_COMMIT}":
           command: preview
           project_dir: pulumi/pulumi_buildkite_plugin_test
@@ -37,9 +49,10 @@ steps:
 
   - label: ":buildkite::pulumi: Run Plugin - Update"
     plugins:
-      - seek-oss/aws-sm#v2.3.1:
-          env:
-            PULUMI_ACCESS_TOKEN: "pulumi-token"
+      - grapl-security/vault-login#v0.1.0
+      - grapl-security/vault-env#v0.1.0:
+          secrets:
+            - PULUMI_ACCESS_TOKEN
       - "grapl-security/pulumi#${BUILDKITE_COMMIT}":
           command: update
           project_dir: pulumi/pulumi_buildkite_plugin_test
