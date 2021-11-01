@@ -53,6 +53,22 @@ pulumi login
 project="$(project_name "${project_dir}" "${stack}")"
 readonly project
 
+# The default for this is `true`, which was set to reduce unnecessary
+# network calls, but is actually useful to have in AWS! This lets us
+# get credentials from the IMDS.
+#
+# While it *technically* means that our configuration is not precisely
+# what is in version control, it's a configuration that doesn't
+# actually have any impact on the infrastructure being created.
+#
+# For further background, see:
+# https://github.com/pulumi/pulumi-aws/pull/1288
+# https://github.com/pulumi/pulumi-aws/issues/1636
+pulumi config set \
+    aws:skipMetadataApiCheck false \
+    --cwd="${project_dir}" \
+    --stack="${stack}"
+
 case "${command}" in
     preview)
         echo -e "--- :pulumi: Previewing changes to ${project} + ${stack} infrastructure"
