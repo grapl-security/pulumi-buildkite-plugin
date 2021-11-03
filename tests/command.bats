@@ -24,7 +24,7 @@ teardown() {
          "login : echo 'Logging in to Pulumi SaaS'" \
          "stack export --cwd=pulumi/my-project --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"my-project\"}}}}'" \
          "config set aws:skipMetadataApiCheck false --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'enabling metadataApiCheck'" \
-         "preview --cwd=pulumi/my-project --stack=my-org/my-stack --show-replacement-steps --non-interactive --diff --message=\"Previewing from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi preview'"
+         "preview --cwd=pulumi/my-project --stack=my-org/my-stack --show-replacement-steps --non-interactive --refresh --diff --message=\"Previewing from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi preview'"
 
     stub pants_venv_setup \
          ": echo 'used Pants for virtualenv'"
@@ -46,7 +46,7 @@ teardown() {
          "login : echo 'Logging in to Pulumi SaaS'" \
          "stack export --cwd=pulumi/my-project --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"my-project\"}}}}'" \
          "config set aws:skipMetadataApiCheck false --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'enabling metadataApiCheck'" \
-         "update --cwd=pulumi/my-project --stack=my-org/my-stack --show-replacement-steps --non-interactive --diff --yes --message=\"Updating from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi update'"
+         "update --cwd=pulumi/my-project --stack=my-org/my-stack --show-replacement-steps --non-interactive --refresh --diff --yes --message=\"Updating from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi update'"
 
     stub pants_venv_setup \
          ": echo 'used Pants for virtualenv'"
