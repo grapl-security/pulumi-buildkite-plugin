@@ -97,6 +97,14 @@ explicitly assumed by this plugin).
 This should refer to a stack configuration file that exists within the
 specified `project_dir` (see above).
 
+### stack (optional, string)
+
+Specifies whether `pulumi update` and `pulumi preview` should be passed the
+`--refresh` flag, which updates Pulumi's view of the stack before performing an
+update/preview respectively.
+
+Defaults to "true"
+
 ## Building
 
 Requires `make`, `docker`, and `docker-compose`.
