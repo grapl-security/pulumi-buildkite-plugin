@@ -103,7 +103,7 @@ Specifies whether `pulumi update` and `pulumi preview` should be passed the
 `--refresh` flag, which updates Pulumi's view of the stack before performing an
 update/preview respectively.
 
-Defaults to "true"
+Defaults to `true`.
 
 ## Building
 
