@@ -44,6 +44,22 @@ steps:
           stack: grapl/testing
     agents:
       queue: "pulumi-staging"
+  
+  - wait
+
+  - label: ":buildkite::pulumi: Run Plugin - Preview - with no refresh"
+    plugins:
+      - grapl-security/vault-login#v0.1.0
+      - grapl-security/vault-env#v0.1.0:
+          secrets:
+            - PULUMI_ACCESS_TOKEN
+      - "grapl-security/pulumi#${BUILDKITE_COMMIT}":
+          command: preview
+          project_dir: pulumi/pulumi_buildkite_plugin_test
+          stack: grapl/testing
+          refresh: "false"
+    agents:
+      queue: "pulumi-staging"
 
   - wait
 

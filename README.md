@@ -97,13 +97,15 @@ explicitly assumed by this plugin).
 This should refer to a stack configuration file that exists within the
 specified `project_dir` (see above).
 
-### stack (optional, string)
+### refresh (optional, boolean)
 
 Specifies whether `pulumi update` and `pulumi preview` should be passed the
 `--refresh` flag, which updates Pulumi's view of the stack before performing an
-update/preview respectively.
+update/preview respectively. Valid values are `"true"` or `"false"`.
 
-Defaults to `true`.
+Defaults to `"true"`.
+
+NOTE: Quote the string, or else yaml will turn it into a boolean!
 
 ## Building
 
