@@ -15,6 +15,12 @@ readonly valid_commands=(
 readonly project_dir="${BUILDKITE_PLUGIN_PULUMI_PROJECT_DIR}"
 readonly stack="${BUILDKITE_PLUGIN_PULUMI_STACK}"
 
+# coerce to string
+readonly default_refresh_bool=1
+readonly refresh_bool="${BUILDKITE_PLUGIN_PULUMI_REFRESH:-${default_refresh_bool}}"
+refresh=$([[ $refresh_bool = 1 ]] && echo "true" || echo "false")
+readonly refresh
+
 should_run() {
     for valid in "${valid_commands[@]}"; do
         if [ "${command}" == "${valid}" ]; then
@@ -77,6 +83,7 @@ case "${command}" in
             --stack="${stack}" \
             --show-replacement-steps \
             --non-interactive \
+            --refresh="${refresh}" \
             --diff \
             --message="Previewing from ${BUILDKITE_BUILD_URL}"
         ;;
@@ -87,6 +94,7 @@ case "${command}" in
             --stack="${stack}" \
             --show-replacement-steps \
             --non-interactive \
+            --refresh="${refresh}" \
             --diff \
             --yes \
             --message="Updating from ${BUILDKITE_BUILD_URL}"
