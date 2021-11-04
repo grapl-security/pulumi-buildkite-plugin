@@ -57,7 +57,7 @@ steps:
           command: preview
           project_dir: pulumi/pulumi_buildkite_plugin_test
           stack: grapl/testing
-          refresh: "false"
+          refresh: false
     agents:
       queue: "pulumi-staging"
 
