@@ -82,7 +82,7 @@ teardown() {
 
     # shellcheck disable=SC2030,SC2031
     export BUILDKITE_PLUGIN_PULUMI_COMMAND=update
-    export BUILDKITE_PLUGIN_PULUMI_REFRESH=false
+    export BUILDKITE_PLUGIN_PULUMI_REFRESH=0
 
     run "${PWD}/hooks/command"
 

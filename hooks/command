@@ -14,8 +14,11 @@ readonly valid_commands=(
 
 readonly project_dir="${BUILDKITE_PLUGIN_PULUMI_PROJECT_DIR}"
 readonly stack="${BUILDKITE_PLUGIN_PULUMI_STACK}"
-readonly default_refresh_val="true"
-readonly refresh="${BUILDKITE_PLUGIN_PULUMI_REFRESH:-${default_refresh_val}}"
+
+# coerce to string
+readonly default_refresh_bool=1
+readonly refresh_bool="${BUILDKITE_PLUGIN_PULUMI_REFRESH:-${default_refresh_bool}}"
+readonly refresh=$([[ $refresh_bool = 1 ]] && echo "true" || echo "false")
 
 should_run() {
     for valid in "${valid_commands[@]}"; do

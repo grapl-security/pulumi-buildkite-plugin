@@ -16,8 +16,8 @@ configuration:
       description: Name of the stack to operate on
       type: string
     refresh:
-      description: Should Pulumi perform a refresh before the update/preview? ("true" or "false")
-      type: string
+      description: Should Pulumi perform a refresh before the update/preview?
+      type: bool
     # venv_management:
     #   description: The method for managing the Python virtualenv for the Pulumi project
     #   type: string

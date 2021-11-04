@@ -101,11 +101,9 @@ specified `project_dir` (see above).
 
 Specifies whether `pulumi update` and `pulumi preview` should be passed the
 `--refresh` flag, which updates Pulumi's view of the stack before performing an
-update/preview respectively. Valid values are `"true"` or `"false"`.
+update/preview respectively.
 
-Defaults to `"true"`.
-
-NOTE: Quote the string, or else yaml will turn it into a boolean!
+Defaults to `true`.
 
 ## Building
 
