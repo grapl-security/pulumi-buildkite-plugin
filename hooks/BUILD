@@ -1,5 +1,1 @@
-shell_library(
-    sources=[
-        "command"
-    ]
-)
+shell_sources(sources=["command"])
