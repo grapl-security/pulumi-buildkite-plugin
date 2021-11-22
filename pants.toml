@@ -1,5 +1,5 @@
 [GLOBAL]
-pants_version = "2.7.1"
+pants_version = "2.8.0"
 backend_packages = [
     "pants.backend.python",
     "pants.backend.shell",
@@ -38,7 +38,7 @@ root_patterns = [
     "/pulumi"
 ]
 
-[python-setup]
+[python]
 requirement_constraints = "3rdparty/python/constraints.txt"
 interpreter_constraints = ["CPython==3.7.*"]
 

@@ -1,3 +1,1 @@
-shell_library(
-    sources=["pants_venv_setup"]
-)
+shell_sources(sources=["pants_venv_setup"])
