@@ -4,6 +4,10 @@ env:
   BUILDKITE_PLUGIN_VAULT_ENV_SECRET_PREFIX: "secret/data/buildkite/env"
 
 steps:
+  - label: ":jeans: All files are covered by Pants"
+    command:
+      - ./pants tailor --check
+
   - label: ":lint-roller::bash: Lint Shell"
     command:
       - make lint-shell
