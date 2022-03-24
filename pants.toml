@@ -7,6 +7,8 @@ backend_packages = [
     "pants.backend.shell.lint.shfmt"
 ]
 
+use_deprecated_python_macros = false
+
 pants_ignore = [
     "!.buildkite/"
 ]
