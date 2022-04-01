@@ -3,6 +3,8 @@
 set -euo pipefail
 
 # shellcheck source-path=SCRIPTDIR
+source "$(dirname "${BASH_SOURCE[0]}")/../lib/log.sh"
+# shellcheck source-path=SCRIPTDIR
 source "$(dirname "${BASH_SOURCE[0]}")/../lib/pulumi.sh"
 
 readonly default_command=preview
@@ -54,7 +56,7 @@ export PATH
 ########################################################################
 
 echo -e "--- :pulumi: Log in"
-pulumi login
+log_and_run pulumi login
 
 project="$(project_name "${project_dir}" "${stack}")"
 readonly project
@@ -70,7 +72,7 @@ readonly project
 # For further background, see:
 # https://github.com/pulumi/pulumi-aws/pull/1288
 # https://github.com/pulumi/pulumi-aws/issues/1636
-pulumi config set \
+log_and_run pulumi config set \
     aws:skipMetadataApiCheck false \
     --cwd="${project_dir}" \
     --stack="${stack}"
@@ -78,7 +80,7 @@ pulumi config set \
 case "${command}" in
     preview)
         echo -e "--- :pulumi: Previewing changes to ${project} + ${stack} infrastructure"
-        pulumi preview \
+        log_and_run pulumi preview \
             --cwd="${project_dir}" \
             --stack="${stack}" \
             --show-replacement-steps \
@@ -89,7 +91,7 @@ case "${command}" in
         ;;
     update)
         echo -e "--- :pulumi: Updating ${project} + ${stack} infrastructure"
-        pulumi update \
+        log_and_run pulumi update \
             --cwd="${project_dir}" \
             --stack="${stack}" \
             --show-replacement-steps \
