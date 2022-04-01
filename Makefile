@@ -1,10 +1,14 @@
-COMPOSE_USER=$(shell id -u):$(shell id -g)
+.PHONY: all
+all: format
+all: lint
+all: test
 
 # Linting
 ########################################################################
 
 .PHONY: lint
-lint: lint-plugin lint-shell
+lint: lint-plugin
+lint: lint-shell
 
 .PHONY: lint-plugin
 lint-plugin:
@@ -28,7 +32,8 @@ format-shell:
 ########################################################################
 
 .PHONY: test
-test: test-plugin test-shell
+test: test-plugin
+test: test-shell
 
 .PHONY: test-plugin
 test-plugin:
@@ -37,8 +42,3 @@ test-plugin:
 .PHONY: test-shell
 test-shell:
 	./pants test ::
-
-########################################################################
-
-.PHONY: all
-all: format lint test
