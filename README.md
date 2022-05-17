@@ -55,6 +55,20 @@ steps:
           stack: grapl/testing
 ```
 
+To add a local policy pack to the run, specify the `policy-pack`
+option:
+
+```yml
+steps:
+  - label: "Pulumi Update"
+    plugins:
+      - grapl-security/pulumi#v0.1.4:
+          command: update
+          project_dir: pulumi/nomad
+          stack: grapl/testing
+          policy-pack: path/to/policy-pack
+```
+
 ## Configuration
 
 ### command (optional, string)
@@ -104,6 +118,13 @@ Specifies whether `pulumi update` and `pulumi preview` should be passed the
 update/preview respectively.
 
 Defaults to `true`.
+
+### policy-pack (optional, string)
+
+The path to a local [policy
+pack](https://www.pulumi.com/docs/guides/crossguard/get-started/) to
+use for Pulumi operations. Corresponds to the `--policy-pack`
+flag. Paths should be relative to the repository root.
 
 ## Building
 
