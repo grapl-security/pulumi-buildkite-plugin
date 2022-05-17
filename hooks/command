@@ -23,6 +23,22 @@ readonly refresh_bool="${BUILDKITE_PLUGIN_PULUMI_REFRESH:-${default_refresh_bool
 refresh=$([[ $refresh_bool = 1 ]] && echo "true" || echo "false")
 readonly refresh
 
+extra_args=()
+
+# Resolve Policy Pack
+########################################################################
+if [ -n "${BUILDKITE_PLUGIN_PULUMI_POLICY_PACK:-}" ]; then
+    # Since we run `pulumi` with the `--cwd` option, any relative path
+    # for a policy pack must be resolved relative to the *project*
+    # directory, as opposed to the repository root. However,
+    # specifying all paths as relative to the root provides a better
+    # and more consistent user experience for users of this
+    # plugin. Thus, we take on this little bit of work rather than
+    # foist it onto users.
+    relative_policy_path="$(realpath --relative-to="${project_dir}" "${BUILDKITE_PLUGIN_PULUMI_POLICY_PACK}")"
+    extra_args+=("--policy-pack=${relative_policy_path}")
+fi
+
 should_run() {
     for valid in "${valid_commands[@]}"; do
         if [ "${command}" == "${valid}" ]; then
@@ -87,6 +103,7 @@ case "${command}" in
             --non-interactive \
             --refresh="${refresh}" \
             --diff \
+            "${extra_args[@]}" \
             --message="Previewing from ${BUILDKITE_BUILD_URL}"
         ;;
     update)
@@ -99,6 +116,7 @@ case "${command}" in
             --refresh="${refresh}" \
             --diff \
             --yes \
+            "${extra_args[@]}" \
             --message="Updating from ${BUILDKITE_BUILD_URL}"
         ;;
     *)

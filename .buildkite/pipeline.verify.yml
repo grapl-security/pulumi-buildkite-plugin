@@ -62,6 +62,7 @@ steps:
           project_dir: pulumi/pulumi_buildkite_plugin_test
           stack: grapl/testing
           refresh: false
+          policy-pack: pulumi/policy
     agents:
       queue: "pulumi-staging"
 
@@ -77,5 +78,6 @@ steps:
           command: update
           project_dir: pulumi/pulumi_buildkite_plugin_test
           stack: grapl/testing
+          policy-pack: pulumi/policy
     agents:
       queue: "pulumi-staging"

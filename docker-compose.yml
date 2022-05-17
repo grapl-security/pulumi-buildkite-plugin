@@ -20,7 +20,10 @@ x-common-variables:
 
 services:
   plugin-tester:
-    image: buildkite/plugin-tester:latest # the only available tag
+    build:
+      context: .
+      dockerfile: plugin-tester.Dockerfile
+    image: grapl-plugin-tester:latest
     volumes:
       - *read-only-plugin
 

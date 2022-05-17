@@ -18,6 +18,7 @@ teardown() {
     unset BUILDKITE_PLUGIN_PULUMI_PROJECT_DIR
     unset BUILDKITE_PLUGIN_PULUMI_STACK
     unset BUILDKITE_PLUGIN_PULUMI_REFRESH
+    unset BUILDKITE_PLUGIN_PULUMI_POLICY_PACK
 }
 
 @test "defaults to running 'pulumi preview'" {
@@ -70,7 +71,7 @@ teardown() {
 
 @test "pulumi update respects a configurable refresh" {
     # We are primarily interested in the `--refresh=false` being picked up here.
-    
+
     stub pulumi \
          "login : echo 'Logging in to Pulumi SaaS'" \
          "stack export --cwd=pulumi/my-project --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"my-project\"}}}}'" \
@@ -104,4 +105,29 @@ teardown() {
 
     assert_output --partial "Unrecognized command: 'foobar'!"
     assert_failure
+}
+
+@test "can run policy packs" {
+
+    export BUILDKITE_PLUGIN_PULUMI_COMMAND=update
+
+    # These are *real* paths within this repository. We're using them
+    # for this particular test to exercise the relativization of the
+    # policy pack's path, which is a little trickier to stub out.
+    export BUILDKITE_PLUGIN_PULUMI_PROJECT_DIR=pulumi/pulumi_buildkite_plugin_test
+    export BUILDKITE_PLUGIN_PULUMI_POLICY_PACK=pulumi/policy
+
+    stub pulumi \
+         "login : echo 'Logging in to Pulumi SaaS'" \
+         "stack export --cwd=pulumi/pulumi_buildkite_plugin_test --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"pulumi-buildkite-plugin-test\"}}}}'" \
+         "config set aws:skipMetadataApiCheck false --cwd=pulumi/pulumi_buildkite_plugin_test --stack=my-org/my-stack : echo 'enabling metadataApiCheck'" \
+         "update --cwd=pulumi/pulumi_buildkite_plugin_test --stack=my-org/my-stack --show-replacement-steps --non-interactive --refresh=true --diff --yes --policy-pack=../policy --message=\"Updating from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi update with a policy pack'"
+
+    stub pants_venv_setup \
+         ": echo 'used Pants for virtualenv'"
+
+    run "${PWD}/hooks/command"
+
+    assert_output --partial "Doing a Pulumi update with a policy pack"
+    assert_success
 }

@@ -7,8 +7,13 @@ all: test
 ########################################################################
 
 .PHONY: lint
+lint: lint-docker
 lint: lint-plugin
 lint: lint-shell
+
+.PHONY: lint-docker
+lint-docker:  ## Lint Dockerfiles
+	./pants filter --target-type=docker_image :: | xargs ./pants lint
 
 .PHONY: lint-plugin
 lint-plugin:
@@ -37,7 +42,7 @@ test: test-shell
 
 .PHONY: test-plugin
 test-plugin:
-	docker-compose run --rm plugin-tester
+	docker-compose build && docker-compose run --rm plugin-tester
 
 .PHONY: test-shell
 test-shell:
