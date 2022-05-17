@@ -18,6 +18,11 @@ configuration:
     refresh:
       description: Should Pulumi perform a refresh before the update/preview?
       type: boolean
+    policy-pack:
+      description: |
+        Path to a local policy pack to run. Should be within the
+        repository, and relative to the repository root.
+      type: string
     # venv_management:
     #   description: The method for managing the Python virtualenv for the Pulumi project
     #   type: string
