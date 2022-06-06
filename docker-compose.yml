@@ -1,5 +1,3 @@
-version: "3.8"
-
 x-common-variables:
   read-only-workdir: &read-only-workdir
     type: bind
