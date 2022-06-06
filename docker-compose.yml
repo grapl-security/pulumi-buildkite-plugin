@@ -1,5 +1,3 @@
-version: "3.8"
-
 x-common-variables:
   read-only-workdir: &read-only-workdir
     type: bind
@@ -28,7 +26,7 @@ services:
       - *read-only-plugin
 
   plugin-linter:
-    image: buildkite/plugin-linter:latest # the only available tag
+    image: buildkite/plugin-linter@sha256:833b1ce8326b038c748c8f04d317045205e115b1732a6842ec4a957f550fe357
     command: ["--id", "grapl-security/pulumi"]
     volumes:
       - *read-only-plugin

@@ -1,3 +1,5 @@
+DOCKER_COMPOSE_CHECK := docker compose run --rm
+
 .PHONY: all
 all: format
 all: lint
@@ -17,7 +19,7 @@ lint-docker:  ## Lint Dockerfiles
 
 .PHONY: lint-plugin
 lint-plugin:
-	docker-compose run --rm plugin-linter
+	$(DOCKER_COMPOSE_CHECK) plugin-linter
 
 .PHONY: lint-shell
 lint-shell:
@@ -42,7 +44,7 @@ test: test-shell
 
 .PHONY: test-plugin
 test-plugin:
-	docker-compose build && docker-compose run --rm plugin-tester
+	docker compose build && $(DOCKER_COMPOSE_CHECK) plugin-tester
 
 .PHONY: test-shell
 test-shell:
