@@ -93,6 +93,18 @@ log_and_run pulumi config set \
     --cwd="${project_dir}" \
     --stack="${stack}"
 
+# This value was apparently always set to `true` prior to
+# https://github.com/pulumi/pulumi-aws/pull/2004, which changed it to
+# `false` in v5.9.0
+# (https://github.com/pulumi/pulumi-aws/releases/tag/v5.9.0).
+#
+# Unsure exactly why this new default fails for us, but until we sort
+# that out, we'll override this configuration value here.
+log_and_run pulumi config set \
+    aws:skipCredentialsValidation true \
+    --cwd="${project_dir}" \
+    --stack="${stack}"
+
 case "${command}" in
     preview)
         echo -e "--- :pulumi: Previewing changes to ${project} + ${stack} infrastructure"

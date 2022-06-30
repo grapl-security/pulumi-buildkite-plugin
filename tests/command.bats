@@ -26,6 +26,7 @@ teardown() {
          "login : echo 'Logging in to Pulumi SaaS'" \
          "stack export --cwd=pulumi/my-project --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"my-project\"}}}}'" \
          "config set aws:skipMetadataApiCheck false --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'enabling metadataApiCheck'" \
+         "config set aws:skipCredentialsValidation true --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'disabling credentialValidation'" \
          "preview --cwd=pulumi/my-project --stack=my-org/my-stack --show-replacement-steps --non-interactive --refresh=true --diff --message=\"Previewing from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi preview'"
 
     stub pants_venv_setup \
@@ -48,6 +49,7 @@ teardown() {
          "login : echo 'Logging in to Pulumi SaaS'" \
          "stack export --cwd=pulumi/my-project --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"my-project\"}}}}'" \
          "config set aws:skipMetadataApiCheck false --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'enabling metadataApiCheck'" \
+         "config set aws:skipCredentialsValidation true --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'disabling credentialValidation'" \
          "update --cwd=pulumi/my-project --stack=my-org/my-stack --show-replacement-steps --non-interactive --refresh=true --diff --yes --message=\"Updating from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi update'"
 
     stub pants_venv_setup \
@@ -76,6 +78,7 @@ teardown() {
          "login : echo 'Logging in to Pulumi SaaS'" \
          "stack export --cwd=pulumi/my-project --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"my-project\"}}}}'" \
          "config set aws:skipMetadataApiCheck false --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'enabling metadataApiCheck'" \
+         "config set aws:skipCredentialsValidation true --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'disabling credentialValidation'" \
          "update --cwd=pulumi/my-project --stack=my-org/my-stack --show-replacement-steps --non-interactive --refresh=false --diff --yes --message=\"Updating from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi update'"
 
     stub pants_venv_setup \
@@ -121,6 +124,7 @@ teardown() {
          "login : echo 'Logging in to Pulumi SaaS'" \
          "stack export --cwd=pulumi/pulumi_buildkite_plugin_test --stack=my-org/my-stack : echo '{\"deployment\": {\"secrets_providers\": {\"state\": {\"project\": \"pulumi-buildkite-plugin-test\"}}}}'" \
          "config set aws:skipMetadataApiCheck false --cwd=pulumi/pulumi_buildkite_plugin_test --stack=my-org/my-stack : echo 'enabling metadataApiCheck'" \
+         "config set aws:skipCredentialsValidation true --cwd=pulumi/my-project --stack=my-org/my-stack : echo 'disabling credentialValidation'" \
          "update --cwd=pulumi/pulumi_buildkite_plugin_test --stack=my-org/my-stack --show-replacement-steps --non-interactive --refresh=true --diff --yes --policy-pack=../policy --message=\"Updating from https://buildkite.com/my-org/my-pipeline/builds/1\" : echo 'Doing a Pulumi update with a policy pack'"
 
     stub pants_venv_setup \
