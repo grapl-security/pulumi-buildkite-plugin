@@ -25,7 +25,7 @@ In particular, the following are currently assumed:
 steps:
   - label: "Pulumi Preview"
     plugins:
-      - grapl-security/pulumi#v0.1.4:
+      - grapl-security/pulumi#v0.1.5:
           project_dir: pulumi/nomad
           stack: grapl/testing
 ```
@@ -37,7 +37,7 @@ explicitly:
 steps:
   - label: "Pulumi Preview"
     plugins:
-      - grapl-security/pulumi#v0.1.4:
+      - grapl-security/pulumi#v0.1.5:
           command: preview
           project_dir: pulumi/nomad
           stack: grapl/testing
@@ -49,7 +49,7 @@ To perform an update, simply specify the `update` command:
 steps:
   - label: "Pulumi Update"
     plugins:
-      - grapl-security/pulumi#v0.1.4:
+      - grapl-security/pulumi#v0.1.5:
           command: update
           project_dir: pulumi/nomad
           stack: grapl/testing
@@ -62,7 +62,7 @@ option:
 steps:
   - label: "Pulumi Update"
     plugins:
-      - grapl-security/pulumi#v0.1.4:
+      - grapl-security/pulumi#v0.1.5:
           command: update
           project_dir: pulumi/nomad
           stack: grapl/testing
