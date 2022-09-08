@@ -4,9 +4,9 @@ env:
   BUILDKITE_PLUGIN_VAULT_ENV_SECRET_PREFIX: "secret/data/buildkite/env"
 
 steps:
-  - label: ":jeans: All files are covered by Pants"
+  - label: ":pants: All files are covered by Pants"
     command:
-      - ./pants tailor --check
+      - make lint-pants
 
   - label: ":lint-roller::bash: Lint Shell"
     command:
@@ -48,7 +48,7 @@ steps:
           stack: grapl/testing
     agents:
       queue: "pulumi-staging"
-  
+
   - wait
 
   - label: ":buildkite::pulumi: Run Plugin - Preview - with no refresh"

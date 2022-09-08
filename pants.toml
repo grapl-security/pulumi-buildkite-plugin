@@ -9,6 +9,9 @@ backend_packages = [
     "pants.backend.shell.lint.shfmt"
 ]
 
+use_deprecated_directory_cli_args_semantics = false
+use_deprecated_pex_binary_run_semantics = false
+
 pants_ignore = [
     "!.buildkite/"
 ]
@@ -44,9 +47,7 @@ root_patterns = [
 [python]
 requirement_constraints = "3rdparty/python/constraints.txt"
 interpreter_constraints = ["CPython==3.7.*"]
-
-[python-infer]
-inits = true
+tailor_pex_binary_targets = false
 
 [shfmt]
 # Indent with 4 spaces

@@ -10,12 +10,17 @@ all: test
 
 .PHONY: lint
 lint: lint-docker
+lint: lint-pants
 lint: lint-plugin
 lint: lint-shell
 
 .PHONY: lint-docker
 lint-docker:  ## Lint Dockerfiles
-	./pants filter --target-type=docker_image :: | xargs ./pants lint
+	./pants --filter-target-type=docker_image lint ::
+
+.PHONY: lint-pants
+lint-pants: ## Ensure all files that should be covered by Pants actually are
+	./pants tailor --check ::
 
 .PHONY: lint-plugin
 lint-plugin:
